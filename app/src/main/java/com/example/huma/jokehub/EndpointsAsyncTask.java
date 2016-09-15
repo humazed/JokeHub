@@ -11,7 +11,7 @@ import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 
 import java.io.IOException;
 
-class EndpointsAsyncTask extends AsyncTask<String, Void, String> {
+public class EndpointsAsyncTask extends AsyncTask<String, Void, String> {
     private static MyApi myApiService = null;
     private Context context;
     OnResultReturned mOnResultReturned;
@@ -57,7 +57,7 @@ class EndpointsAsyncTask extends AsyncTask<String, Void, String> {
         mOnResultReturned.onResult(result);
     }
 
-    interface OnResultReturned {
+    public interface OnResultReturned {
         void onResult(String s);
     }
 }
