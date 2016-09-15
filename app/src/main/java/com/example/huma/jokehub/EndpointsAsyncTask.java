@@ -2,8 +2,6 @@ package com.example.huma.jokehub;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.util.Pair;
-import android.widget.Toast;
 
 import com.example.huma.myapplication.backend.myApi.MyApi;
 import com.google.api.client.extensions.android.http.AndroidHttp;
@@ -13,7 +11,7 @@ import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 
 import java.io.IOException;
 
-class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> {
+class EndpointsAsyncTask extends AsyncTask<String, Void, String> {
     private static MyApi myApiService = null;
     private Context context;
     OnResultReturned mOnResultReturned;
@@ -25,9 +23,8 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
     public EndpointsAsyncTask() {
     }
 
-    @SafeVarargs
     @Override
-    protected final String doInBackground(Pair<Context, String>... params) {
+    protected final String doInBackground(String... params) {
         if (myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
@@ -46,8 +43,7 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
             myApiService = builder.build();
         }
 
-        context = params[0].first;
-        String name = params[0].second;
+        String name = params[0];
 
         try {
             return myApiService.sayHi(name).execute().getData();
@@ -58,7 +54,6 @@ class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, String> 
 
     @Override
     protected void onPostExecute(String result) {
-        Toast.makeText(context, "success", Toast.LENGTH_LONG).show();
         mOnResultReturned.onResult(result);
     }
 
