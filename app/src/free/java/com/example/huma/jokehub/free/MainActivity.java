@@ -1,10 +1,9 @@
-package com.example.huma.jokehub.paid;
+package com.example.huma.jokehub.free;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.JokeProvider;
 import com.example.huma.jokedisplay.DisplayActivity;
@@ -24,11 +23,8 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
     }
 
     public void tellJoke(View view) {
-        Toast.makeText(this, mJoke, Toast.LENGTH_SHORT).show();
-
         EndpointsAsyncTask task = new EndpointsAsyncTask(this);
         task.execute(mJoke);
-
     }
 
     @Override
