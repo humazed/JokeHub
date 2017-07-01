@@ -14,7 +14,7 @@ import java.io.IOException;
 public class EndpointsAsyncTask extends AsyncTask<String, Void, String> {
     private static MyApi myApiService = null;
     private Context context;
-    OnResultReturned mOnResultReturned;
+    private OnResultReturned mOnResultReturned;
 
     public EndpointsAsyncTask(OnResultReturned onResultReturned) {
         mOnResultReturned = onResultReturned;
