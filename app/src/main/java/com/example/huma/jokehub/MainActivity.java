@@ -7,12 +7,12 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.JokeProvider;
 import com.example.huma.jokedisplay.DisplayActivity;
 
-public class MainActivity extends AppCompatActivity implements EndpointsAsyncTask.OnResultReturned {
+import java.util.concurrent.ExecutionException;
 
-    private String mJoke;
+public class MainActivity extends AppCompatActivity {
+
     private ProgressBar mProgressBar;
 
     @Override
@@ -21,20 +21,15 @@ public class MainActivity extends AppCompatActivity implements EndpointsAsyncTas
         setContentView(R.layout.activity_main);
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        mJoke = JokeProvider.getJoke();
     }
 
-    public void tellJoke(View view) {
+    public void tellJoke(View view) throws ExecutionException, InterruptedException {
         mProgressBar.setVisibility(View.VISIBLE);
-        Toast.makeText(this, mJoke, Toast.LENGTH_SHORT).show();
-        EndpointsAsyncTask task = new EndpointsAsyncTask(this);
-        task.execute(mJoke);
+        EndpointsAsyncTask task = new EndpointsAsyncTask();
+        String joke = task.execute().get();
+
+        Toast.makeText(this, joke, Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(this, DisplayActivity.class).putExtra("joke", joke));
     }
 
-    @Override
-    public void onResult(String s) {
-        mProgressBar.setVisibility(View.GONE);
-        startActivity(new Intent(this, DisplayActivity.class)
-                .putExtra("joke", mJoke));
-    }
 }

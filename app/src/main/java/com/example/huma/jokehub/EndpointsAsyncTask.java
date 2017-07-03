@@ -1,6 +1,5 @@
 package com.example.huma.jokehub;
 
-import android.content.Context;
 import android.os.AsyncTask;
 
 import com.example.huma.myapplication.backend.myApi.MyApi;
@@ -11,20 +10,14 @@ import com.google.api.client.googleapis.services.GoogleClientRequestInitializer;
 
 import java.io.IOException;
 
-public class EndpointsAsyncTask extends AsyncTask<String, Void, String> {
+public class EndpointsAsyncTask extends AsyncTask<Void, Void, String> {
     private static MyApi myApiService = null;
-    private Context context;
-    private OnResultReturned mOnResultReturned;
-
-    public EndpointsAsyncTask(OnResultReturned onResultReturned) {
-        mOnResultReturned = onResultReturned;
-    }
 
     public EndpointsAsyncTask() {
     }
 
     @Override
-    protected final String doInBackground(String... params) {
+    protected final String doInBackground(Void... params) {
         if (myApiService == null) {  // Only do this once
             MyApi.Builder builder = new MyApi.Builder(AndroidHttp.newCompatibleTransport(),
                     new AndroidJsonFactory(), null)
@@ -43,21 +36,10 @@ public class EndpointsAsyncTask extends AsyncTask<String, Void, String> {
             myApiService = builder.build();
         }
 
-        String name = params[0];
-
         try {
-            return myApiService.sayHi(name).execute().getData();
+            return myApiService.tellAJoke().execute().getData();
         } catch (IOException e) {
             return e.getMessage();
         }
-    }
-
-    @Override
-    protected void onPostExecute(String result) {
-        mOnResultReturned.onResult(result);
-    }
-
-    public interface OnResultReturned {
-        void onResult(String s);
     }
 }
