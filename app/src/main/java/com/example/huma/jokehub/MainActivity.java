@@ -25,11 +25,16 @@ public class MainActivity extends AppCompatActivity {
 
     public void tellJoke(View view) throws ExecutionException, InterruptedException {
         mProgressBar.setVisibility(View.VISIBLE);
-        EndpointsAsyncTask task = new EndpointsAsyncTask();
-        String joke = task.execute().get();
 
-        Toast.makeText(this, joke, Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(this, DisplayActivity.class).putExtra("joke", joke));
+        EndpointsAsyncTask task = new EndpointsAsyncTask(new EndpointsAsyncTask.OnResultReturned() {
+            @Override
+            public void onResult(String joke) {
+                Toast.makeText(MainActivity.this, joke, Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(MainActivity.this, DisplayActivity.class).putExtra("joke", joke));
+            }
+        });
+        task.execute();
+
     }
 
 }
